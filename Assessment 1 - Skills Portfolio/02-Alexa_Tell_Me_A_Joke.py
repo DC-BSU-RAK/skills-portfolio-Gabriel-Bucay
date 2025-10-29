@@ -9,7 +9,7 @@ class JokeAssistantApp:
         self.root.title("Alexa Joker Assistant")
         self.root.geometry("400x300") #window size
 
-        # Load jokes from file
+        # Load jokes from file 
         base_dir = os.path.dirname(__file__)
         jokes_path = os.path.join(base_dir, "A1 - Resources", "randomJokes.txt")
         self.jokes = self.load_jokes(jokes_path)
