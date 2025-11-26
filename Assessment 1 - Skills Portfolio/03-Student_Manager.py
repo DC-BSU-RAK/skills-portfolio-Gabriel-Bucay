@@ -8,6 +8,7 @@ def load_students(filename="A1 - Resources/studentMarks.txt"):
     file_path = os.path.join(base_dir, filename)
     
     students = []
+    # open the file and reads the Student data
     with open(file_path, "r") as f:
         n = int(f.readline().strip())
         for line in f:
@@ -19,6 +20,7 @@ def load_students(filename="A1 - Resources/studentMarks.txt"):
             total = coursework + exam
             percentage = (total / 160) * 100
             grade = get_grade(percentage)
+            # stores record as a dictionary
             students.append({
                 "code": code,
                 "name": name,
@@ -29,9 +31,7 @@ def load_students(filename="A1 - Resources/studentMarks.txt"):
             })
     return students
 
-# -------------------------------
 # Grade calculation
-# -------------------------------
 def get_grade(percentage):
     if percentage >= 70: return "A"
     elif percentage >= 60: return "B"
@@ -39,10 +39,9 @@ def get_grade(percentage):
     elif percentage >= 40: return "D"
     else: return "F"
 
-# -------------------------------
 # GUI Functions
-# -------------------------------
 def display_student(s):
+    #shows the data with related emoji (lil trick from first few weeks)
     output_text = (
         f"👤 {s['name']} ({s['code']})\n"
         f"📘 Coursework: {s['coursework']} / 60\n"
@@ -51,7 +50,7 @@ def display_student(s):
         f"🏅 Grade: {s['grade']}\n\n"
     )
     return output_text
-
+#viewing all student data option
 def view_all_students():
     output.delete("1.0", tk.END)
     total_percent = 0
@@ -59,10 +58,11 @@ def view_all_students():
         output.insert(tk.END, display_student(s))
         total_percent += s['percentage']
     avg = total_percent / len(students)
+    #stat summary
     output.insert(tk.END, f"📌 Summary\n")
     output.insert(tk.END, f"👥 Students: {len(students)}\n")
     output.insert(tk.END, f"📈 Average: {avg:.2f}%\n")
-
+#individual viewing of stats
 def view_student():
     code = simpledialog.askinteger("Student Lookup", "Enter student code:")
     output.delete("1.0", tk.END)
@@ -71,34 +71,33 @@ def view_student():
             output.insert(tk.END, display_student(s))
             return
     messagebox.showerror("Error", "Student not found!")
-
+#Shows highest score
 def highest_score():
     top = max(students, key=lambda s: s["percentage"])
     output.delete("1.0", tk.END)
     output.insert(tk.END, "🏆 Highest Scorer\n")
     output.insert(tk.END, display_student(top))
-
+#Shows lowest score
 def lowest_score():
     low = min(students, key=lambda s: s["percentage"])
     output.delete("1.0", tk.END)
     output.insert(tk.END, "🔻 Lowest Scorer\n")
     output.insert(tk.END, display_student(low))
 
-# -------------------------------
 # Main GUI Setup
-# -------------------------------
 root = tk.Tk()
 root.title("Student Manager")
 root.geometry("600x500")
-root.configure(bg="#1e1e1e")
+root.configure(bg="#000000")
 
 # Custom font and colors
-FONT = ("Segoe UI", 11)
-TEXT_BG = "#2b2b2b"
-TEXT_FG = "#f0f0f0"
-BTN_BG = "#3c3f41"
-BTN_FG = "#ffffff"
-ACCENT = "#00bcd4"
+#old computer style
+FONT = ("Courier New", 11)
+TEXT_BG = "#000000" #main background
+TEXT_FG = "#0be528" #font color
+BTN_BG = "#000000"
+BTN_FG = "#000000"
+ACCENT = "#03E862"
 
 # Menu bar
 menu = tk.Menu(root, bg=BTN_BG, fg=BTN_FG, activebackground=ACCENT, activeforeground="white")
@@ -110,14 +109,14 @@ menu.add_command(label="🏆 Highest", command=highest_score)
 menu.add_command(label="🔻 Lowest", command=lowest_score)
 
 # Output frame
-frame = tk.Frame(root, bg="#1e1e1e")
+frame = tk.Frame(root, bg="#000000")
 frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
 scrollbar = tk.Scrollbar(frame)
 scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
 output = tk.Text(frame, wrap=tk.WORD, yscrollcommand=scrollbar.set,
-                 bg=TEXT_BG, fg=TEXT_FG, font=FONT, insertbackground="white")
+                 bg=TEXT_BG, fg=TEXT_FG, font=FONT, insertbackground="black")
 output.pack(fill=tk.BOTH, expand=True)
 scrollbar.config(command=output.yview)
 
